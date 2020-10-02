@@ -1,0 +1,21 @@
+{
+  "name": "daniloh/elevador-unit-test",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Danilo Henrique de Canini Romani",
+      "email": "daniloh@romagnole.com.br"
+    }
+  ],
+  "scripts": {
+    "tests": "vendor/bin/phpunit"
+  },
+  "require": {
+    "phpunit/phpunit": "^9.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Application\\": "src/"
+    }
+  }
+}
