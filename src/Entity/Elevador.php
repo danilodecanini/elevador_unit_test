@@ -13,11 +13,13 @@ class Elevador
 	protected $pessoas = array();
 	protected $andarDesejado;
 	protected static $instance = NULL;
-
+	protected $status;
+	protected $andarSolicido;
 
 	private function __construct()
 	{
 		$this->andarAtualElevador = 5;
+		$this->status = 'Vazio';
 	}
 
 	public static function getInstance()
@@ -28,13 +30,15 @@ class Elevador
 		return self::$instance;
 	}
 
-	public function receberPessoa(Pessoa $pessoa)
+	public function andarAtual(){
+		return $this->andarAtualElevador;
+	}
+
+	public function entraPessoa(Pessoa $pessoa)
 	{
-		if (sizeof($this->pessoas) < 1) {
-			$this->pessoas[] = $pessoa;
-		} else {
-			throw new Exception('O Elevador está cheio');
-		}
+		$this->pessoas[] = $pessoa;
+		$this->status = "Ocupado";
+		echo "Pessoa entra no elevador. Elevador está no " . $this->andarAtualElevador . " andar \n";
 	}
 
 	public function removerPessoa(Pessoa $pessoa)
@@ -46,25 +50,46 @@ class Elevador
 		}
 	}
 
-	public function irParaOAndar($andarSolicitado)
+	public function elevadorChamado($andarSolicitado)
 	{
+		$this->andarSolicitado = $andarSolicitado;
+		$this->irParaOAndar($andarSolicitado);
+	}
+
+	public function irParaOAndar($andarDesejado)
+	{
+		if($this->status === "Ocupado"){
+			echo "Pessoa aperta " . $andarDesejado . " andar. Elevador está no " . $this->andarAtualElevador . " andar \n";
+		}
+		if($this->andarAtualElevador > $andarDesejado){
+			$this->descer($andarDesejado);
+		} else {
+			$this->subir($andarDesejado);
+		}
 	}
 
 	public function subir($andarDesejado)
 	{
-		for ($i = $this->andarAtualElevador; $i <= $andarDesejado; $i++) {
-			echo "O Elevador esta no andar: " . $i . "<br>";
+		for ($i = $this->andarAtualElevador+1; $i <= $andarDesejado; $i++) {
+			if($this->status === "Vazio"){
+				echo "Pessoa está no " . $this->andarSolicitado . ". O Elevador esta no andar: " . $i . "\n";
+			} elseif ($this->status === "Ocupado"){
+				echo "Pessoa está no elevador. O Elevador esta no andar: " . $i . "\n";
+			}
+			$this->andarAtualElevador = $i;
 		}
 
-		return $this->andarAtualElevador = $i;
 	}
 
 	public function descer($andarDesejado)
 	{
-		for ($i = $this->andarAtualElevador; $i >= $andarDesejado; $i--) {
-			echo "O Elevador esta no andar: " . $i . "<br>";
+		for ($i = $this->andarAtualElevador-1; $i >= $andarDesejado; $i--) {
+			if($this->status === "Vazio"){
+				echo "Pessoa está no " . $this->andarSolicitado . ". O Elevador esta no andar: " . $i . "\n";
+			} elseif ($this->status === "Ocupado"){
+				echo "Pessoa está no elevador. O Elevador esta no andar: " . $i . "\n";
+			}
+			$this->andarAtualElevador = $i;
 		}
-
-		return $this->andarAtualElevador = $i;
 	}
 }

@@ -8,24 +8,12 @@ class ChamarElevadorTest extends TestCase
 
   public function testChamarElevador()
   {
-    $pessoa = new Pessoa(0);
-    $pessoa->chamaElevador();
+    $pessoa = new Pessoa(3);
+    $pessoa->chamaElevador($pessoa->andarAtualPessoa());
     $pessoa->entrarNoElevador();
-    // $pessoa->sobe(8);
+    $pessoa->irParaAndar(8);
+    $pessoa->sairElevador();
 
-    $this->assertEquals(1, $pessoa->chamaElevador());
-  }
-
-  public function testLimiteDoElevador()
-  {
-    $pessoa = new Pessoa(0);
-    $pessoa->chamaElevador();
-    $pessoa->entrarNoElevador();
-
-    $pessoa2 = new Pessoa(2);
-    $pessoa2->chamaElevador();
-    $pessoa2->entrarNoElevador();
-
-    $this->expectException(Exception::class);
+    $this->assertEquals(3, $pessoa->andarAtualPessoa());
   }
 }
